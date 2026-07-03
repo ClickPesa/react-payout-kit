@@ -2,7 +2,10 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "CommonJS",
-    "lib": ["ES2020", "DOM"],
+    "lib": [
+      "ES2020",
+      "DOM"
+    ],
     "jsx": "react-jsx",
     "outDir": "./dist",
     "rootDir": "./src",
@@ -12,17 +15,27 @@
     "skipLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "antd/lib/*": ["../admin-dashboard-v3/node_modules/antd/lib/*"],
-      "@clickpesa/components-library.inputs.select-input": [
-        "../admin-dashboard-v3/node_modules/@clickpesa/components-library.inputs.select-input"
+      "antd/lib/*": [
+        "../admin-dashboard-v3/node_modules/antd/lib/*"
       ],
-      "@clickpesa/components-library.inputs.text-input": [
-        "../admin-dashboard-v3/node_modules/@clickpesa/components-library.inputs.text-input"
+      "react-phone-input-2": [
+        "./node_modules/react-phone-input-2",
+        "../merchant-dashboard-v2/node_modules/react-phone-input-2",
+        "../admin-dashboard-v3/node_modules/react-phone-input-2"
       ],
-      "react": ["../admin-dashboard-v3/node_modules/@types/react"],
-      "react-dom": ["../admin-dashboard-v3/node_modules/@types/react-dom"]
+      "react": [
+        "../admin-dashboard-v3/node_modules/@types/react"
+      ],
+      "react-dom": [
+        "../admin-dashboard-v3/node_modules/@types/react-dom"
+      ]
     }
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

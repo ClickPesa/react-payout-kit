@@ -34,4 +34,8 @@ export interface PayoutDestinationFieldsProps extends PayoutDestinationAdapters 
   theme: "dark" | "light";
   fieldNames?: PayoutDestinationFieldNames;
   disabled?: boolean;
+  /** Pre-filled refund amount (displayed read-only) */
+  amount?: number;
+  /** Currency code for the read-only amount display */
+  currency?: string;
 }

@@ -1,0 +1,240 @@
+.rpk-payout-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Card-wrapped field (mirrors merchant .clickpesa-wizard-input) */
+.rpk-payout-fields .rpk-field {
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 7px;
+  position: relative;
+}
+
+.rpk-payout-fields .rpk-field:hover {
+  border-color: #40a9ff;
+}
+
+.rpk-payout-fields .rpk-field:focus-within {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+  outline: none;
+}
+
+.rpk-payout-fields .rpk-label {
+  background: #f3f4f6;
+  border-radius: 6px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 8px;
+}
+
+.rpk-payout-fields .rpk-field .ant-form-item {
+  margin-bottom: 0;
+}
+
+/* Borderless inner controls */
+.rpk-payout-fields .rpk-field .ant-input,
+.rpk-payout-fields .rpk-field .ant-input-affix-wrapper,
+.rpk-payout-fields .rpk-field .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+  background: none !important;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #575962;
+}
+
+.rpk-payout-fields .rpk-field .ant-select-selection-search-input {
+  height: 39px !important;
+}
+
+.rpk-payout-fields .rpk-field .ant-form-item-explain-error {
+  color: #ff4d4f;
+  font-size: 12px;
+  padding: 2px 4px 0;
+}
+
+/* Send Via radio cards (mirrors merchant .radio-card) */
+.rpk-payout-fields .rpk-send-via .ant-radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.rpk-payout-fields .rpk-radio-card {
+  padding: 1.25rem 1rem !important;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 4px;
+  margin-inline-start: 0 !important;
+  margin-right: 0 !important;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.rpk-payout-fields .rpk-radio-card.active {
+  border-color: rgba(22, 119, 255, 0.3);
+  background: rgba(22, 119, 255, 0.05);
+}
+
+.rpk-payout-fields .rpk-radio-card > span:nth-child(2) {
+  flex: 1;
+}
+
+.rpk-payout-fields .rpk-radio-card .rpk-radio-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  margin: 0;
+}
+
+/* Amount (read-only) */
+.rpk-payout-fields .rpk-amount-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 39px;
+}
+
+.rpk-payout-fields .rpk-amount-currency {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+  color: #575962;
+}
+
+.rpk-payout-fields .rpk-currency-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 24px;
+  padding: 0 8px;
+  border-radius: 12px;
+  background: #eef2f7;
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
+}
+
+.rpk-payout-fields .rpk-amount-value {
+  font-size: 14px;
+  color: #9ca3af;
+}
+
+/* Phone input (react-phone-input-2) */
+.rpk-payout-fields .rpk-phone .react-tel-input {
+  font-family: inherit;
+}
+
+.rpk-payout-fields .rpk-phone .react-tel-input .form-control {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+  width: 100%;
+  height: 39px;
+  font-size: 14px;
+  color: #575962;
+  padding-left: 48px;
+}
+
+.rpk-payout-fields .rpk-phone .react-tel-input .flag-dropdown,
+.rpk-payout-fields .rpk-phone .react-tel-input .flag-dropdown.open,
+.rpk-payout-fields .rpk-phone .react-tel-input .selected-flag,
+.rpk-payout-fields .rpk-phone .react-tel-input .selected-flag:hover,
+.rpk-payout-fields .rpk-phone .react-tel-input .selected-flag.open {
+  border: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Verify name row */
+.rpk-payout-fields .rpk-namecheck {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  min-height: 20px;
+  padding: 4px 4px 0;
+}
+
+.rpk-payout-fields .rpk-verify-btn {
+  font-size: 14px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: #1890ff;
+}
+
+.rpk-payout-fields .rpk-verified-name {
+  font-size: 14px;
+  color: #52c41a;
+}
+
+/* ---- Dark theme ---- */
+.rpk-payout-fields.dark .rpk-field {
+  background: #2b343b;
+  border-color: #6f6f70;
+}
+
+.rpk-payout-fields.dark .rpk-field:hover {
+  border-color: #40a9ff;
+}
+
+.rpk-payout-fields.dark .rpk-label {
+  background-color: #363e44;
+  color: #fff;
+}
+
+.rpk-payout-fields.dark .rpk-field .ant-input,
+.rpk-payout-fields.dark .rpk-field .ant-input-affix-wrapper,
+.rpk-payout-fields.dark .rpk-field .ant-select-selector,
+.rpk-payout-fields.dark .rpk-phone .react-tel-input .form-control {
+  color: #fff !important;
+}
+
+.rpk-payout-fields.dark .rpk-field .ant-select-selection-item,
+.rpk-payout-fields.dark .rpk-field .anticon {
+  color: #fff !important;
+}
+
+.rpk-payout-fields.dark .rpk-radio-card {
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.rpk-payout-fields.dark .rpk-radio-card.active {
+  border-color: rgba(22, 119, 255, 0.4);
+  background: rgba(22, 119, 255, 0.08);
+}
+
+.rpk-payout-fields.dark .rpk-amount-currency {
+  color: #fff;
+}
+
+.rpk-payout-fields.dark .rpk-currency-badge {
+  background: #363e44;
+  color: #fff;
+}
+
+.rpk-payout-fields.dark .rpk-phone .react-tel-input .country-list {
+  background-color: #2b343b;
+  color: #fff;
+}
+
+.rpk-payout-fields.dark .rpk-phone .react-tel-input .country-list .country:hover,
+.rpk-payout-fields.dark .rpk-phone .react-tel-input .country-list .country.highlight {
+  background-color: #363e44;
+}

@@ -1,24 +1,19 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Form from "antd/lib/form";
-import Row from "antd/lib/row";
-import Col from "antd/lib/col";
+import Radio from "antd/lib/radio";
+import Select from "antd/lib/select";
 import Input from "antd/lib/input";
 import Alert from "antd/lib/alert";
-import { SelectInput } from "@clickpesa/components-library.inputs.select-input";
-import { TextInput } from "@clickpesa/components-library.inputs.text-input";
-import type { Bank, PayoutDestinationFieldsProps } from "./types";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "./styles.css";
+import type { PayoutDestinationFieldsProps } from "./types";
 import { resolveMnoNamecheckChannel } from "./namecheck";
 import { getMNOChannel, validateTanzanianPhoneNumber } from "./mno";
+import { BankIcon, PhoneIcon } from "./icons";
 import Spinner from "./Spinner";
 
-const verifyNameButtonStyle = {
-  fontSize: "14px",
-  background: "none",
-  border: "none",
-  padding: 0,
-  cursor: "pointer",
-  color: "#1890ff",
-};
+const { Option } = Select;
 
 const DEFAULT_FIELD_NAMES = {
   destinationType: "destination_type",
@@ -27,6 +22,12 @@ const DEFAULT_FIELD_NAMES = {
   accountName: "account_name",
 };
 
+const formatAmount = (value: number) =>
+  new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+
 export const PayoutDestinationFields = ({
   form,
   theme,
@@ -34,13 +35,17 @@ export const PayoutDestinationFields = ({
   verifyName,
   fieldNames: fieldNamesProp,
   disabled = false,
+  amount,
+  currency,
 }: PayoutDestinationFieldsProps) => {
   const fieldNames = { ...DEFAULT_FIELD_NAMES, ...fieldNamesProp };
   const destinationType = Form.useWatch(fieldNames.destinationType, form);
   const channelProvider = Form.useWatch(fieldNames.channelProvider, form);
   const accountNumber = Form.useWatch(fieldNames.accountNumber, form);
 
-  const [banks, setBanks] = useState<Bank[]>([]);
+  const [banks, setBanks] = useState<
+    import("./types").Bank[]
+  >([]);
   const [banksLoading, setBanksLoading] = useState(false);
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [verifiedName, setVerifiedName] = useState<string | undefined>();
@@ -143,17 +148,17 @@ export const PayoutDestinationFields = ({
       });
   };
 
-  const renderNameCheckExtra = () => {
+  const renderNameCheckRow = () => {
     if (!canVerifyName) {
       return null;
     }
 
     return (
-      <>
+      <div className="rpk-namecheck">
         {!verifiedName && !verifyLoading && (
           <button
             type="button"
-            style={verifyNameButtonStyle}
+            className="rpk-verify-btn"
             onClick={handleVerifyName}
             disabled={disabled}
           >
@@ -162,142 +167,185 @@ export const PayoutDestinationFields = ({
         )}
         {verifyLoading && <Spinner height={24} />}
         {verifiedName && !verifyLoading && (
-          <span style={{ fontSize: "14px" }}>{verifiedName}</span>
+          <span className="rpk-verified-name">{verifiedName}</span>
         )}
-      </>
+      </div>
     );
   };
 
-  return (
-    <Row gutter={[12, 16]}>
-      <Col span={24}>
-        <SelectInput
-          isFormItem
-          name={fieldNames.destinationType}
-          label="Destination Type"
-          placeholder="Select destination type"
-          mode={theme}
-          disabled={disabled}
-          options={[
-            { label: "MOBILE MONEY", value: "MNO" },
-            { label: "BANK", value: "BANK" },
-          ]}
-          onChange={handleDestinationTypeChange}
-          rules={[
-            {
-              required: true,
-              message: "Destination type is required",
-            },
-          ]}
-        />
-      </Col>
+  const phoneLabel =
+    detectedMno?.label ? `${detectedMno.label} Number` : "Mobile Number";
 
-      {destinationType === "BANK" && (
-        <>
-          <Col span={24}>
-            <SelectInput
-              isFormItem
-              name={fieldNames.channelProvider}
-              label="Bank Name"
-              placeholder={banksLoading ? "Loading banks..." : "Select bank"}
-              mode={theme}
-              disabled={disabled}
-              options={bankOptions}
-              rules={[
-                {
-                  required: true,
-                  message: "Bank name is required",
-                },
-              ]}
-            />
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              name={fieldNames.accountNumber}
-              label="Account Number"
-              className={`basic-text-input ${theme}`}
-              extra={renderNameCheckExtra()}
-              rules={[
-                {
-                  required: true,
-                  message: "Account number is required",
-                },
-              ]}
+  return (
+    <div className={`rpk-payout-fields ${theme}`}>
+      {/* Send Via */}
+      <div className="rpk-field rpk-send-via">
+        <div className="rpk-label">Send Via</div>
+        <Form.Item
+          name={fieldNames.destinationType}
+          rules={[
+            { required: true, message: "Send via is required" },
+          ]}
+        >
+          <Radio.Group
+            disabled={disabled}
+            onChange={handleDestinationTypeChange}
+            style={{ width: "100%" }}
+          >
+            <Radio
+              value="MNO"
+              className={`rpk-radio-card ${
+                destinationType === "MNO" ? "active" : ""
+              }`}
             >
-              <Input
-                placeholder="Enter account number"
-                className={`basic-text-input-item ${theme}`}
-                disabled={disabled}
-              />
-            </Form.Item>
-          </Col>
-        </>
+              <p className="rpk-radio-content">
+                MOBILE MONEY
+                <PhoneIcon />
+              </p>
+            </Radio>
+            <Radio
+              value="BANK"
+              className={`rpk-radio-card ${
+                destinationType === "BANK" ? "active" : ""
+              }`}
+            >
+              <p className="rpk-radio-content">
+                BANK
+                <BankIcon />
+              </p>
+            </Radio>
+          </Radio.Group>
+        </Form.Item>
+      </div>
+
+      {/* Amount (read-only) */}
+      {amount !== undefined && currency && (
+        <div className="rpk-field rpk-amount">
+          <div className="rpk-label">Amount</div>
+          <div className="rpk-amount-row">
+            <div className="rpk-amount-currency">
+              <span className="rpk-currency-badge">{currency}</span>
+            </div>
+            <span className="rpk-amount-value">{formatAmount(amount)}</span>
+          </div>
+        </div>
       )}
 
+      {/* Mobile Money */}
       {destinationType === "MNO" && (
         <>
           <Form.Item name={fieldNames.channelProvider} hidden>
             <Input />
           </Form.Item>
-          <Col span={24}>
+          <div className="rpk-field rpk-phone">
+            <div className="rpk-label">{phoneLabel}</div>
             <Form.Item
               name={fieldNames.accountNumber}
-              label={
-                detectedMno?.label
-                  ? `${detectedMno.label} Number`
-                  : "Mobile Number"
-              }
-              className={`basic-text-input ${theme}`}
-              extra={renderNameCheckExtra()}
               rules={[
-                {
-                  required: true,
-                  message: "Mobile number is required",
-                },
+                { required: true, message: "Mobile number is required" },
                 {
                   validator: (_: unknown, value: string) =>
                     validateTanzanianPhoneNumber(value),
                 },
               ]}
             >
-              <Input
-                placeholder="255600000000"
-                className={`basic-text-input-item ${theme}`}
+              <PhoneInput
+                country="tz"
+                onlyCountries={["tz"]}
+                disableDropdown
+                specialLabel=""
+                placeholder="Enter mobile number"
                 disabled={disabled}
+                containerClass={`tel-input ${theme}`}
+                inputStyle={{
+                  width: "100%",
+                  height: "39px",
+                  fontSize: 14,
+                  color: "#575962",
+                  fontFamily: "inherit",
+                  border: "none",
+                  background: "none",
+                }}
               />
             </Form.Item>
-          </Col>
+            {renderNameCheckRow()}
+          </div>
           {accountNumber && !detectedMno && (
-            <Col span={24}>
-              <Alert
-                type="warning"
-                showIcon
-                message="Unsupported mobile money number"
-                description="This number does not match a supported Tanzanian mobile money provider."
-              />
-            </Col>
+            <Alert
+              type="warning"
+              showIcon
+              message="Unsupported mobile money number"
+              description="This number does not match a supported Tanzanian mobile money provider."
+            />
           )}
         </>
       )}
 
-      {(destinationType === "BANK" || destinationType === "MNO") && (
-        <Col span={24}>
-          <TextInput
-            isFormItem
-            name={fieldNames.accountName}
-            label="Account Name"
-            placeholder="Account name"
-            mode={theme}
-            disabled={disabled}
-            rules={[
-              {
-                required: true,
-                message: "Account name is required",
-              },
-            ]}
-          />
-        </Col>
+      {/* Bank */}
+      {destinationType === "BANK" && (
+        <>
+          <div className="rpk-field">
+            <div className="rpk-label">Bank Name</div>
+            <Form.Item
+              name={fieldNames.channelProvider}
+              rules={[{ required: true, message: "Bank name is required" }]}
+            >
+              <Select
+                showSearch
+                placeholder={
+                  banksLoading ? "Loading banks..." : "Select bank"
+                }
+                disabled={disabled || banksLoading}
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.children as unknown as string)
+                    ?.toLowerCase()
+                    .indexOf(input.toLowerCase()) >= 0
+                }
+              >
+                {bankOptions.map((bank) => (
+                  <Option key={bank.value} value={bank.value}>
+                    {bank.label}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </div>
+          <div className="rpk-field">
+            <div className="rpk-label">Account Number</div>
+            <Form.Item
+              name={fieldNames.accountNumber}
+              rules={[
+                { required: true, message: "Account number is required" },
+              ]}
+            >
+              <Input
+                placeholder="Enter account number"
+                disabled={disabled}
+              />
+            </Form.Item>
+            {renderNameCheckRow()}
+          </div>
+        </>
       )}
-    </Row>
+
+      {/* Account Name */}
+      {(destinationType === "BANK" || destinationType === "MNO") && (
+        <div className="rpk-field">
+          <div className="rpk-label">Account Name</div>
+          <Form.Item
+            name={fieldNames.accountName}
+            rules={[
+              { required: true, message: "Account name is required" },
+            ]}
+          >
+            <Input
+              placeholder="Account name"
+              disabled={disabled}
+            />
+          </Form.Item>
+        </div>
+      )}
+    </div>
   );
 };

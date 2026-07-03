@@ -52,6 +52,19 @@
   color: #575962;
 }
 
+/* Higher-specificity overrides to beat app-level !important borders on the
+   select across every interaction state (default / hover / focus / open) */
+.rpk-payout-fields.rpk-payout-fields .rpk-field .ant-select,
+.rpk-payout-fields.rpk-payout-fields .rpk-field .ant-select .ant-select-selector,
+.rpk-payout-fields.rpk-payout-fields .rpk-field .ant-select:hover .ant-select-selector,
+.rpk-payout-fields.rpk-payout-fields .rpk-field .ant-select-focused .ant-select-selector,
+.rpk-payout-fields.rpk-payout-fields .rpk-field .ant-select-open .ant-select-selector {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: none !important;
+}
+
 .rpk-payout-fields .rpk-field .ant-select-selection-search-input {
   height: 39px !important;
 }

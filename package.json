@@ -1,6 +1,6 @@
 {
   "name": "@clickpesa/react-payout-kit",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Shared React payout destination fields and utilities for ClickPesa apps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

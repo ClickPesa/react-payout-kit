@@ -26,10 +26,13 @@ const validateTanzanianPhoneNumber = (value) => {
     if (!value) {
         return Promise.resolve();
     }
-    if ((0, tanzanian_phone_validator_1.isValidPhoneNumber)(value)) {
-        return Promise.resolve();
+    if (!(0, tanzanian_phone_validator_1.isValidPhoneNumber)(value)) {
+        return Promise.reject(new Error("Enter a valid Tanzanian mobile number"));
     }
-    return Promise.reject(new Error("Invalid mobile number"));
+    if (!(0, exports.getMNOChannel)(value)) {
+        return Promise.reject(new Error("This number does not match a supported Tanzanian mobile money provider"));
+    }
+    return Promise.resolve();
 };
 exports.validateTanzanianPhoneNumber = validateTanzanianPhoneNumber;
 const getMnoProviderLabel = (value) => exports.MNO_NAMES.find((mno) => mno.value === value)?.label || value;

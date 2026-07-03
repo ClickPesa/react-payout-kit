@@ -36,10 +36,17 @@ export const validateTanzanianPhoneNumber = (value?: string) => {
   if (!value) {
     return Promise.resolve();
   }
-  if (isValidPhoneNumber(value)) {
-    return Promise.resolve();
+  if (!isValidPhoneNumber(value)) {
+    return Promise.reject(new Error("Enter a valid Tanzanian mobile number"));
   }
-  return Promise.reject(new Error("Invalid mobile number"));
+  if (!getMNOChannel(value)) {
+    return Promise.reject(
+      new Error(
+        "This number does not match a supported Tanzanian mobile money provider"
+      )
+    );
+  }
+  return Promise.resolve();
 };
 
 export const getMnoProviderLabel = (value?: string) =>

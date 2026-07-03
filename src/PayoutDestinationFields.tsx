@@ -3,7 +3,6 @@ import Form from "antd/lib/form";
 import Radio from "antd/lib/radio";
 import Select from "antd/lib/select";
 import Input from "antd/lib/input";
-import Alert from "antd/lib/alert";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./styles.css";
@@ -270,14 +269,6 @@ export const PayoutDestinationFields = ({
             </Form.Item>
             {renderNameCheckRow()}
           </div>
-          {accountNumber && !detectedMno && (
-            <Alert
-              type="warning"
-              showIcon
-              message="Unsupported mobile money number"
-              description="This number does not match a supported Tanzanian mobile money provider."
-            />
-          )}
         </>
       )}
 

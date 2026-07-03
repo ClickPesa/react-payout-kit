@@ -10,7 +10,6 @@ const form_1 = __importDefault(require("antd/lib/form"));
 const radio_1 = __importDefault(require("antd/lib/radio"));
 const select_1 = __importDefault(require("antd/lib/select"));
 const input_1 = __importDefault(require("antd/lib/input"));
-const alert_1 = __importDefault(require("antd/lib/alert"));
 const react_phone_input_2_1 = __importDefault(require("react-phone-input-2"));
 require("react-phone-input-2/lib/style.css");
 require("./styles.css");
@@ -142,7 +141,7 @@ const PayoutDestinationFields = ({ form, theme, fetchBanks, verifyName, fieldNam
                                         fontFamily: "inherit",
                                         border: "none",
                                         background: "none",
-                                    } }) }), renderNameCheckRow()] }), accountNumber && !detectedMno && ((0, jsx_runtime_1.jsx)(alert_1.default, { type: "warning", showIcon: true, message: "Unsupported mobile money number", description: "This number does not match a supported Tanzanian mobile money provider." }))] })), destinationType === "BANK" && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "rpk-field", children: [(0, jsx_runtime_1.jsx)("div", { className: "rpk-label", children: "Bank Name" }), (0, jsx_runtime_1.jsx)(form_1.default.Item, { name: fieldNames.channelProvider, rules: [{ required: true, message: "Bank name is required" }], children: (0, jsx_runtime_1.jsx)(select_1.default, { showSearch: true, placeholder: banksLoading ? "Loading banks..." : "Select bank", disabled: disabled || banksLoading, optionFilterProp: "children", filterOption: (input, option) => option?.children
+                                    } }) }), renderNameCheckRow()] })] })), destinationType === "BANK" && ((0, jsx_runtime_1.jsxs)(jsx_runtime_1.Fragment, { children: [(0, jsx_runtime_1.jsxs)("div", { className: "rpk-field", children: [(0, jsx_runtime_1.jsx)("div", { className: "rpk-label", children: "Bank Name" }), (0, jsx_runtime_1.jsx)(form_1.default.Item, { name: fieldNames.channelProvider, rules: [{ required: true, message: "Bank name is required" }], children: (0, jsx_runtime_1.jsx)(select_1.default, { showSearch: true, placeholder: banksLoading ? "Loading banks..." : "Select bank", disabled: disabled || banksLoading, optionFilterProp: "children", filterOption: (input, option) => option?.children
                                         ?.toLowerCase()
                                         .indexOf(input.toLowerCase()) >= 0, children: bankOptions.map((bank) => ((0, jsx_runtime_1.jsx)(Option, { value: bank.value, children: bank.label }, bank.value))) }) })] }), (0, jsx_runtime_1.jsxs)("div", { className: "rpk-field", children: [(0, jsx_runtime_1.jsx)("div", { className: "rpk-label", children: "Account Number" }), (0, jsx_runtime_1.jsx)(form_1.default.Item, { name: fieldNames.accountNumber, rules: [
                                     { required: true, message: "Account number is required" },

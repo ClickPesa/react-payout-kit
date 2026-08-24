@@ -47,13 +47,17 @@ const PayoutDestinationFields = ({ form, theme, fetchBanks, verifyName, fieldNam
         }
         return (0, mno_1.getMNOChannel)(accountNumber);
     }, [destinationType, accountNumber]);
+    const selectedBank = (0, react_1.useMemo)(() => banks.find((bank) => bank.value === channelProvider), [banks, channelProvider]);
     const nameCheckChannel = destinationType === "MNO"
         ? (0, namecheck_1.resolveMnoNamecheckChannel)(detectedMno?.value)
         : (0, namecheck_1.resolveMnoNamecheckChannel)(channelProvider);
     const canVerifyName = !disabled &&
-        !!nameCheckChannel &&
         !!accountNumber &&
-        (destinationType === "BANK" || accountNumber.length >= 12);
+        (destinationType === "MNO"
+            ? !!nameCheckChannel && accountNumber.length >= 12
+            : destinationType === "BANK" &&
+                !!channelProvider &&
+                (!!nameCheckChannel || !!selectedBank?.bic));
     const resetVerifiedName = (0, react_1.useCallback)(() => {
         setVerifiedName(undefined);
     }, []);
@@ -102,19 +106,31 @@ const PayoutDestinationFields = ({ form, theme, fetchBanks, verifyName, fieldNam
         resetVerifiedName();
     };
     const handleVerifyName = () => {
-        if (!nameCheckChannel || !accountNumber) {
+        if (!accountNumber) {
+            return;
+        }
+        if (destinationType === "MNO" && !nameCheckChannel) {
+            return;
+        }
+        if (destinationType === "BANK" &&
+            !nameCheckChannel &&
+            !selectedBank?.bic) {
             return;
         }
         setVerifyLoading(true);
         verifyName({
             mobile_number: accountNumber,
-            mno_name: nameCheckChannel,
+            ...(nameCheckChannel ? { mno_name: nameCheckChannel } : {}),
+            ...(destinationType === "BANK" && selectedBank?.bic
+                ? { bic: selectedBank.bic }
+                : {}),
         })
             .then((response) => {
             const fullName = response?.full_name;
             setVerifiedName(fullName);
             form.setFieldValue(fieldNames.accountName, fullName);
         })
+            .catch(() => undefined)
             .finally(() => {
             setVerifyLoading(false);
         });

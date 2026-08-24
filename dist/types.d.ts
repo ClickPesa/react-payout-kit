@@ -2,16 +2,19 @@ export type SupportedMNOCheckChannel = "airtel" | "tigo" | "ezypesa" | "mpesa" |
 export interface Bank {
     name: string;
     value: string;
+    bic?: string;
 }
 export interface NameCheckResult {
     full_name: string;
 }
+export interface NameCheckRequest {
+    mobile_number: string;
+    mno_name?: SupportedMNOCheckChannel;
+    bic?: string;
+}
 export interface PayoutDestinationAdapters {
     fetchBanks: () => Promise<Bank[]>;
-    verifyName: (body: {
-        mno_name: SupportedMNOCheckChannel;
-        mobile_number: string;
-    }) => Promise<NameCheckResult>;
+    verifyName: (body: NameCheckRequest) => Promise<NameCheckResult>;
 }
 export interface PayoutDestinationFieldNames {
     destinationType?: string;

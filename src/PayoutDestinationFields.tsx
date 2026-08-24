@@ -65,6 +65,11 @@ export const PayoutDestinationFields = ({
     return getMNOChannel(accountNumber);
   }, [destinationType, accountNumber]);
 
+  const selectedBank = useMemo(
+    () => banks.find((bank) => bank.value === channelProvider),
+    [banks, channelProvider]
+  );
+
   const nameCheckChannel =
     destinationType === "MNO"
       ? resolveMnoNamecheckChannel(detectedMno?.value)
@@ -72,9 +77,12 @@ export const PayoutDestinationFields = ({
 
   const canVerifyName =
     !disabled &&
-    !!nameCheckChannel &&
     !!accountNumber &&
-    (destinationType === "BANK" || accountNumber.length >= 12);
+    (destinationType === "MNO"
+      ? !!nameCheckChannel && accountNumber.length >= 12
+      : destinationType === "BANK" &&
+        !!channelProvider &&
+        (!!nameCheckChannel || !!selectedBank?.bic));
 
   const resetVerifiedName = useCallback(() => {
     setVerifiedName(undefined);
@@ -128,20 +136,34 @@ export const PayoutDestinationFields = ({
   };
 
   const handleVerifyName = () => {
-    if (!nameCheckChannel || !accountNumber) {
+    if (!accountNumber) {
+      return;
+    }
+    if (destinationType === "MNO" && !nameCheckChannel) {
+      return;
+    }
+    if (
+      destinationType === "BANK" &&
+      !nameCheckChannel &&
+      !selectedBank?.bic
+    ) {
       return;
     }
 
     setVerifyLoading(true);
     verifyName({
       mobile_number: accountNumber,
-      mno_name: nameCheckChannel,
+      ...(nameCheckChannel ? { mno_name: nameCheckChannel } : {}),
+      ...(destinationType === "BANK" && selectedBank?.bic
+        ? { bic: selectedBank.bic }
+        : {}),
     })
       .then((response) => {
         const fullName = response?.full_name;
         setVerifiedName(fullName);
         form.setFieldValue(fieldNames.accountName, fullName);
       })
+      .catch(() => undefined)
       .finally(() => {
         setVerifyLoading(false);
       });

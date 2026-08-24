@@ -12,6 +12,7 @@ export {
 export { resolveMnoNamecheckChannel } from "./namecheck";
 export type {
   Bank,
+  NameCheckRequest,
   NameCheckResult,
   PayoutDestinationAdapters,
   PayoutDestinationFieldNames,

@@ -3,13 +3,16 @@ import type { SupportedMNOCheckChannel } from "./types";
 const supportedMNONameChecks: SupportedMNOCheckChannel[] = [
   "airtel",
   "tigo",
+  "ezypesa",
   "mpesa",
   "halopesa",
+  "ttcl",
+  "azampesa",
   "crdb",
 ];
 
 const MNO_NAMECHECK_CHANNEL_ALIASES: Record<string, SupportedMNOCheckChannel> = {
-  ezy: "tigo",
+  ezy: "ezypesa",
 };
 
 export const resolveMnoNamecheckChannel = (

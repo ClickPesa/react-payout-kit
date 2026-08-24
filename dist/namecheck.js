@@ -4,12 +4,15 @@ exports.resolveMnoNamecheckChannel = void 0;
 const supportedMNONameChecks = [
     "airtel",
     "tigo",
+    "ezypesa",
     "mpesa",
     "halopesa",
+    "ttcl",
+    "azampesa",
     "crdb",
 ];
 const MNO_NAMECHECK_CHANNEL_ALIASES = {
-    ezy: "tigo",
+    ezy: "ezypesa",
 };
 const resolveMnoNamecheckChannel = (channelProvider) => {
     if (!channelProvider) {

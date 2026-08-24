@@ -1,4 +1,4 @@
-export type SupportedMNOCheckChannel = "airtel" | "tigo" | "mpesa" | "halopesa" | "crdb";
+export type SupportedMNOCheckChannel = "airtel" | "tigo" | "ezypesa" | "mpesa" | "halopesa" | "ttcl" | "azampesa" | "crdb";
 export interface Bank {
     name: string;
     value: string;
